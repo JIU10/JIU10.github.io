@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="zh-CN" id="theme-light-mode"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="jiu10"><title>JIU's home</title><meta name="description" content="welcome to the moonland."><meta name="keywords" content="Blog,博客,Hexo"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.webp"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/insight.css"><link rel="stylesheet" href="/css/search.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="page-top animated fadeInDown"><div class="nav"><li> <a class="current" href="/">首页</a></li><li> <a href="/archives">归档</a></li><li> <a href="/tags">标签</a></li><li> <a href="/about">关于</a></li><li> <a href="/links">友链</a></li></div><div class="information"><div class="nav_right_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)" style="display:none;"> </a></li><li><a class="fa fa-search" onclick="openWindow();"></a></li></div><div class="avatar"><img src="/images/logo.webp"></div></div></div><div class="sidebar animated fadeInDown"><div class="sidebar-top"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:220px;" alt="favicon"><h3 title=""><a href="/">JIU's home</a></h3><div class="description"><p>welcome to the moonland.</p></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/JIU10"><i class="fa fa-github"></i></a></li><li><a href="mailto:jyzh240166@gmail.com"><i class="fa fa-envelope"></i></a></li></ul></div></div><div class="footer"><div class="p"> <span> [object Object] </span><i class="fa fa-star"></i><span> jiu10</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a><span> & </span><span>Anatolo </span></div><div class="beian"></div></div></div><div class="main"><div class="autopagerize_page_element"><div class="content"><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2023/03/12/STM32H7%E4%BD%BF%E7%94%A8ADC%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E4%B8%8E%E6%89%80%E9%81%87%E9%97%AE%E9%A2%98/">STM32H7使用ADC的注意事项与所遇问题</a></h3></div><div class="post-content"><div class="card"><p><h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><p>​		此处是配置单端输入和差分输入</p>
+<img src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220426766.png" alt="image-20230311220426766" style="zoom:50%;" />
+
+
+
+
+
+<p>​		注意最大频率是36MHz</p>
+<img src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220520258.png" alt="image-20230311220520258" style="zoom:50%;" />
+
+
+
+
+
+<img src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220623548.png" alt="image-20230311220623548" style="zoom:50%;" />
+
+<p>​		用ADC并搭配DMA的必须开连续转换模式</p>
+<img src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311221057261.png" alt="image-20230311221057261" style="zoom: 67%;" />
+
+<p>​		单通道转换完成作为结束</p>
+<img src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311221534821.png" alt="image-20230311221534821" style="zoom:50%;" />
+
+
+
+<h2 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h2><h3 id="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"><a href="#DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式" class="headerlink" title="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"></a>DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</h3><img src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311222118929.png" alt="image-20230311222118929" style="zoom:50%;" />
+
+
+
+<p>2023&#x2F;3&#x2F;11	</p>
+<h4 id="目前问题：当进行采波时会不连续"><a href="#目前问题：当进行采波时会不连续" class="headerlink" title="目前问题：当进行采波时会不连续"></a>目前问题：当进行采波时会不连续</h4><img src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311223915720.png" alt="image-20230311223915720" style="zoom:50%;" />
+
+<p>猜测：看的教程说ADC+DMA必须选择ADC的连续转换模式，而ADC连续转换模式必须要求DMA是循环模式，猜测是DMA的循环模式导致的间断点，因为目前是只采集一次，但是软件触发（这里有个问题，如果开了连续转换模式，软件触发是否有用），只开了一次，而DMA一直在循环搬运导致数据出现问题？</p>
+<h4 id="调试打算："><a href="#调试打算：" class="headerlink" title="调试打算："></a>调试打算：</h4><ol>
+<li>将ADC改成单次转换模式，并将DMA改成单次模式，观察现象。</li>
+<li>如果没有间断点，说明软件触发对于连续转换模式是有用的，它导致了转换的停止，但DMA没有停止，故产生不连续波。</li>
+<li>如果不是，寻找其他原因。</li>
+</ol>
+<p>如果ADC的连续转换模式意思是完成转换后自己开启，那么还有触发的事情吗？？？&#x2F;未解之谜</p>
+<h4 id="调试结果："><a href="#调试结果：" class="headerlink" title="调试结果："></a>调试结果：</h4><ol>
+<li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Disable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA one shot</strong></p>
+<h5 id="结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形"><a href="#结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形" class="headerlink" title="结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形"></a>结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</h5></li>
+<li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Enable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA Circular Mode</strong>，DMA的模式设为<strong>normal</strong></p>
+<h5 id="结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失"><a href="#结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失" class="headerlink" title="结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失"></a>结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</h5><img src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230312142038580.png" alt="image-20230312142038580" style="zoom:50%;" /></li>
+</ol>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><ol>
+<li><p>ADC连续转换模式还是由触发控制，触发后自动重启进行采集，<em>单次转换即使开了似乎也不会采集，意思是只采集一次（存疑）</em></p>
+</li>
+<li><p>DMA选项页的Mode的normal和circular</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>1</th>
+<th>1</th>
+<th>1</th>
+<th>1</th>
+<th>2</th>
+<th>2</th>
+<th>2</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>如上图表格中，第一行代表单次模式，第二行代表DMA，先接收6个数据，然后接收5个数据，单次模式就会数据溢出，而DMA循环模式就会自动重启从第一个开始存，本程序中接收的数据是固定的，可以选择normal模式，选择circular会导致前面数据被覆盖，然后导致截断</p>
+</li>
+<li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似（？存疑）</em></p>
+</li>
+</ol>
+</p></div></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-03-12</span><i class="fa fa-tag"></i><a class="tag" href="/tags/stm32h7-adc-dma/" title="stm32h7 adc dma">stm32h7 adc dma </a><span class="leancloud_visitors"></span><span>大约700个字, 2分钟20秒读完</span></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2023/03/11/hello-world/">Hello World</a></h3></div><div class="post-content"><div class="card"><p><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+</p></div></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-03-11</span><span class="leancloud_visitors"></span><span>大约75个字, 15秒读完</span></div></div></div></div><div class="pagination"><ul class="clearfix"></ul></div></div></div></div><script src="/js/darkLightToggle.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:"文章",PAGES:"页面",CATEGORIES:"分类",TAGS:"标签",UNTITLED:"(无标题)",},CONTENT_URL:"/content.json",};window.INSIGHT_CONFIG=INSIGHT_CONFIG})(window);</script><script src="/js/insight.js" defer></script><div class="searchbox ins-search"><div class="searchbox-container ins-search-container"><div class="searchbox-input-wrapper"><input class="searchbox-input ins-search-input" type="text" placeholder="想要查找什么..."><span class="searchbox-close"><a class="fa fa-times-circle" onclick="closeWindow();"></a></span></div><div class="searchbox-result-wrapper ins-section-wrapper"><div class="ins-section-container"><p>Seraching...</p></div></div></div></div></body></html>
