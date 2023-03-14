@@ -21,7 +21,12 @@
   <entry>
     <title>STM32H7使用ADC的注意事项与所遇问题</title>
     <url>/2023/03/12/STM32H7%E4%BD%BF%E7%94%A8ADC%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E4%B8%8E%E6%89%80%E9%81%87%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><p>​		此处是配置单端输入和差分输入</p>
+    <content><![CDATA[<h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><p>2023&#x2F;3&#x2F;15 1：55</p>
+<p>以下问题在一篇博客的表格中有了答案</p>
+<p>在此贴出链接	</p>
+<p>[]: <a class="link"   href="https://blog.csdn.net/tpytpytpy/article/details/122563117" >https://blog.csdn.net/tpytpytpy/article/details/122563117 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>	“ADC+DMA踩坑及傻瓜式解析”</p>
+<p>​	</p>
+<p>此处是配置单端输入和差分输入</p>
 <img  
                      lazyload
                      src="/images/loading.svg"
@@ -106,9 +111,13 @@
                 ></li>
 </ol>
 <h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><ol>
-<li><p>ADC连续转换模式还是由触发控制，触发后自动重启进行采集，<em>单次转换即使开了似乎也不会采集，意思是只采集一次（存疑）</em></p>
+<li><p>ADC连续转换模式可以由软件触发和停止，用HAL_ADC_Stop_DMA和HAL_ADC_Start_DMA对其进行控制，<strong>但是如果用TIM进行触发的话，请关闭ADC连续转换模式，因为它的开启会使得ADC的步调不听定时器的话。</strong></p>
 </li>
-<li><p>DMA选项页的Mode的normal和circular</p>
+<li><p>DMA选项页的Mode的<strong>normal</strong>和<strong>circular</strong></p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line">HAL_ADC_Start_DMA(&amp;hadc1,testbuffer,BUFF_NUM)；</span><br></pre></td></tr></table></figure></div>
+
+
+
 <table>
 <thead>
 <tr>
@@ -137,9 +146,9 @@
 <td>2</td>
 </tr>
 </tbody></table>
-<p>如上图表格中，第一行代表单次模式，第二行代表DMA，先接收6个数据，然后接收5个数据，单次模式就会数据溢出，而DMA循环模式就会自动重启从第一个开始存，本程序中接收的数据是固定的，可以选择normal模式，选择circular会导致前面数据被覆盖，然后导致截断</p>
+<p>如上图表格中，第一行代表单次模式，第二行代表DMA，先接收6个数据，然后接收5个数据，单次模式就会数据溢出，而DMA循环模式就会自动重启从第一个开始存，本程序中接收的数据是固定的，可以选择normal模式，选择circular会导致前面数据被覆盖，然后导致截断，<strong>总而言之，Circular就是采集BUFF_NUM后会自动重新到数组第一位继续搬运，而Normal则是采集BUFF_NUM之后自动停止，等待下一次HAL_ADC_Start_DMA的调用</strong></p>
 </li>
-<li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似（？存疑）</em></p>
+<li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似，需要重复调用函数（？存疑）</em></p>
 </li>
 </ol>
 ]]></content>
