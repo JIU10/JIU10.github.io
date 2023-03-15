@@ -119,7 +119,7 @@
                                         
                                             <i class="fa-regular fa-house"></i>
                                         
-                                        首頁
+                                        首页
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -135,7 +135,7 @@
                                         
                                             <i class="fa-regular fa-archive"></i>
                                         
-                                        歸檔
+                                        归档
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -167,7 +167,7 @@
                                 
                                     <i class="fa-regular fa-house"></i>
                                 
-                                首頁
+                                首页
                             
                         </a>
                     </li>
@@ -182,7 +182,7 @@
                                 
                                     <i class="fa-regular fa-archive"></i>
                                 
-                                歸檔
+                                归档
                             
                         </a>
                     </li>
@@ -236,7 +236,7 @@
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
         <span class="pc">2023-03-12 00:03:26</span>
         <span class="mobile">2023-03-12 00:03</span>
-        <span class="hover-info">撰寫</span>
+        <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
@@ -264,12 +264,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>1.2k 字數</span>
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>1.2k 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 分鐘</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 分钟</span>
         </span>
     
     
@@ -424,14 +424,14 @@
                 <div class="post-copyright-info">
                     <div class="article-copyright-info-container">
     <ul>
-        <li>文章標題：STM32H7使用ADC的注意事项与所遇问题</li>
-        <li>文章作者：jiu10</li>
-        <li>撰寫時間：2023-03-12 00:03:26</li>
+        <li>本文标题：STM32H7使用ADC的注意事项与所遇问题</li>
+        <li>本文作者：jiu10</li>
+        <li>创建时间：2023-03-12 00:03:26</li>
         <li>
-            永久連結：https://redefine.ohevan.com/2023/03/12/STM32H7使用ADC的注意事项与所遇问题/
+            本文链接：https://redefine.ohevan.com/2023/03/12/STM32H7使用ADC的注意事项与所遇问题/
         </li>
         <li>
-            版權宣告：這個網站所有文章均使用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 授權。
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
         </li>
     </ul>
 </div>
@@ -481,7 +481,7 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div class="toc-title">此頁目錄</div>
+        <div class="toc-title">此页目录</div>
         <div class="page-title">STM32H7使用ADC的注意事项与所遇问题</div>
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8CADC%E9%85%8D%E7%BD%AE%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F"><span class="nav-text">进行ADC配置时候需要注意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8B%E6%98%AF%E4%B8%AA%E4%BA%BA%E5%AF%B9%E5%90%84%E4%B8%AA%E5%8F%82%E6%95%B0%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">以下是个人对各个参数的理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">碰到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA%E7%9A%84%E5%8D%95%E6%AC%A1%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%BE%AA%E7%8E%AF%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8EADC%E7%9A%84%E8%BF%9E%E7%BB%AD%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8D%95%E6%AC%A1%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F"><span class="nav-text">DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E9%97%AE%E9%A2%98%EF%BC%9A%E5%BD%93%E8%BF%9B%E8%A1%8C%E9%87%87%E6%B3%A2%E6%97%B6%E4%BC%9A%E4%B8%8D%E8%BF%9E%E7%BB%AD"><span class="nav-text">目前问题：当进行采波时会不连续</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%89%93%E7%AE%97%EF%BC%9A"><span class="nav-text">调试打算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="nav-text">调试结果：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%EF%BC%9A%E6%B2%A1%E6%9C%89%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%97%A0%E6%B3%95%E8%BE%93%E5%87%BA%E6%B3%A2%E5%BD%A2"><span class="nav-text">结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%B3%A2%E5%BD%A2%E6%AD%A3%E5%B8%B8%EF%BC%8C%E9%97%B4%E6%96%AD%E6%B6%88%E5%A4%B1"><span class="nav-text">结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%A7%A6%E5%8F%91%E6%97%B6-%E5%87%BA%E7%8E%B0%E5%A5%87%E6%80%AA%E5%B0%96%E5%B3%B0-%E4%BD%86%E6%98%AF%E5%8D%95%E6%AC%A1%E9%87%87%E9%9B%86%E6%B2%A1%E6%9C%89"><span class="nav-text">当用定时器触发时,出现奇怪尖峰,但是单次采集没有</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2023-x2F-3-x2F-15"><span class="nav-text">2023&#x2F;3&#x2F;15</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
 
@@ -517,20 +517,20 @@
             <div class="website-count info-item">
                 
                     <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
-                        讀者&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
                     <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
-                        閱覽&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            <span class="powered-by-container"><?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 框架</span>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
                 <br> 
-            <span class="theme-version-container">主題&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v1.2.0</a>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v1.2.0</a>
         </div>
         
         
@@ -539,7 +539,7 @@
                 2022/8/17 11:45:14
             </div>
             <div>
-                博客已運行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小時 <span class="odometer" id="runtime_minutes"></span> 分鐘 <span class="odometer" id="runtime_seconds"></span> 秒
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
         
         
