@@ -21,60 +21,62 @@
   <entry>
     <title>STM32H7使用ADC的注意事项与所遇问题</title>
     <url>/2023/03/12/STM32H7%E4%BD%BF%E7%94%A8ADC%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E4%B8%8E%E6%89%80%E9%81%87%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><p>2023&#x2F;3&#x2F;15 1：55</p>
+    <content><![CDATA[<h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><h3 id="以下是个人对各个参数的理解"><a href="#以下是个人对各个参数的理解" class="headerlink" title="以下是个人对各个参数的理解"></a>以下是个人对各个参数的理解</h3><table>
+<thead>
+<tr>
+<th align="center">设置参数</th>
+<th align="center">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">IN5</td>
+<td align="center">Single-ended与Differential，单值输入和差分输入</td>
+</tr>
+<tr>
+<td align="center">Clock Prescaler</td>
+<td align="center">ADC时钟分频，分频后结果要小于36MHz</td>
+</tr>
+<tr>
+<td align="center">Resolution</td>
+<td align="center">采样位数，决定ADC的采样精度</td>
+</tr>
+<tr>
+<td align="center">Scan Conversion Mode</td>
+<td align="center">当开启多通道时需要开启，进行通道的扫描</td>
+</tr>
+<tr>
+<td align="center">Continuous Conversion Mode</td>
+<td align="center">持续转换模式，意思是经过一次转换后自动开启下一次转换，当开启定时器触发时需要关闭</td>
+</tr>
+<tr>
+<td align="center">Discontinuous Conversion Mode</td>
+<td align="center">单次转换模式，意思是经过一次转换后直接结束，需要自己再次开启（<em>用什么函数</em>）#<em>单次转换模式ADC只采集一次数据就停止采集，使用单次转换模式需要转换通道数大于1</em></td>
+</tr>
+<tr>
+<td align="center">End Of Conversion Selection</td>
+<td align="center">end of sequence of conversion&#x2F;end of single conversion</td>
+</tr>
+<tr>
+<td align="center">Overrun behaviour</td>
+<td align="center">有prevered和overwritten,主要决定如果要采样的数据超过给的空间,是让其溢出还是从头开始写</td>
+</tr>
+<tr>
+<td align="center">Conversion Data Management Mode</td>
+<td align="center">DMA Circular Mode&#x2F;DMA One shot mode&#x2F;Regular Conversion data stored in DR register only&#x2F;DFSDM Mode(需要测试DMA Circular Mode与One shot 的区别)</td>
+</tr>
+</tbody></table>
+<p>根据内容与自己的选择进行ADC的配置,<strong>需要采数据并且对其进行处理的话,需要将DMA开成Normal</strong>,至于Half word,暂未深入理解为什么这样配置</p>
+<blockquote>
+<p>为了便于直接使用，这里的数据类型应与DMA配置的Data Width对应。我使用的MCU其ADC转换精度为12位，因此使用HalfWord(16bit)足以，因此配置时两边都使用了默认的HalfWord，该配置使DMA每次从ADC搬运16bit数据到地址testbuffer，下一波数据搬运到testbuffer+16bit的地址中，再下一次到testbuffer+2*16bit。</p>
+<p><strong>此段来自于以下的链接博客,讲的比较清楚</strong></p>
+</blockquote>
+<hr>
+<p>2023&#x2F;3&#x2F;15 1：55</p>
 <p>以下问题在一篇博客的表格中有了答案</p>
 <p>在此贴出链接	</p>
-<p>[]: <a class="link"   href="https://blog.csdn.net/tpytpytpy/article/details/122563117" >https://blog.csdn.net/tpytpytpy/article/details/122563117 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>	“ADC+DMA踩坑及傻瓜式解析”</p>
+<p>[引用链接1]: <a class="link"   href="https://blog.csdn.net/tpytpytpy/article/details/122563117" >https://blog.csdn.net/tpytpytpy/article/details/122563117 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>	“ADC+DMA踩坑及傻瓜式解析”</p>
+<hr>
 <p>​	</p>
-<p>此处是配置单端输入和差分输入</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220426766.png"
-                      alt="image-20230311220426766" style="zoom:50%;" 
-                >
-
-
-
-
-
-<p>​		注意最大频率是36MHz</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220520258.png"
-                      alt="image-20230311220520258" style="zoom:50%;" 
-                >
-
-
-
-
-
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220623548.png"
-                      alt="image-20230311220623548" style="zoom:50%;" 
-                >
-
-<p>​		用ADC并搭配DMA的必须开连续转换模式</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311221057261.png"
-                      alt="image-20230311221057261" style="zoom: 67%;" 
-                >
-
-<p>​		单通道转换完成作为结束</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311221534821.png"
-                      alt="image-20230311221534821" style="zoom:50%;" 
-                >
-
-
-
 <h2 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h2><h3 id="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"><a href="#DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式" class="headerlink" title="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"></a>DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</h3><img  
                      lazyload
                      src="/images/loading.svg"
@@ -101,9 +103,9 @@
 <p>如果ADC的连续转换模式意思是完成转换后自己开启，那么还有触发的事情吗？？？&#x2F;未解之谜</p>
 <h4 id="调试结果："><a href="#调试结果：" class="headerlink" title="调试结果："></a>调试结果：</h4><ol>
 <li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Disable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA one shot</strong></p>
-<h5 id="结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形"><a href="#结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形" class="headerlink" title="结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形"></a>结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</h5></li>
+<h6 id="结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形"><a href="#结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形" class="headerlink" title="结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形"></a>结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</h6></li>
 <li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Enable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA Circular Mode</strong>，DMA的模式设为<strong>normal</strong></p>
-<h5 id="结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失"><a href="#结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失" class="headerlink" title="结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失"></a>结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</h5><img  
+<h6 id="结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失"><a href="#结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失" class="headerlink" title="结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失"></a>结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</h6><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230312142038580.png"
@@ -151,7 +153,7 @@
 <li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似，需要重复调用函数（？存疑）</em></p>
 </li>
 </ol>
-]]></content>
+<h3 id="当用定时器触发时-出现奇怪尖峰-但是单次采集没有"><a href="#当用定时器触发时-出现奇怪尖峰-但是单次采集没有" class="headerlink" title="当用定时器触发时,出现奇怪尖峰,但是单次采集没有"></a>当用定时器触发时,出现奇怪尖峰,但是单次采集没有</h3><h6 id="2023-x2F-3-x2F-15"><a href="#2023-x2F-3-x2F-15" class="headerlink" title="2023&#x2F;3&#x2F;15"></a>2023&#x2F;3&#x2F;15</h6>]]></content>
       <tags>
         <tag>stm32h7 adc dma</tag>
       </tags>

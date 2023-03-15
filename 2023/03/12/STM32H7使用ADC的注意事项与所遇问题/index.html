@@ -119,7 +119,7 @@
                                         
                                             <i class="fa-regular fa-house"></i>
                                         
-                                        首页
+                                        首頁
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -135,7 +135,7 @@
                                         
                                             <i class="fa-regular fa-archive"></i>
                                         
-                                        归档
+                                        歸檔
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -167,7 +167,7 @@
                                 
                                     <i class="fa-regular fa-house"></i>
                                 
-                                首页
+                                首頁
                             
                         </a>
                     </li>
@@ -182,7 +182,7 @@
                                 
                                     <i class="fa-regular fa-archive"></i>
                                 
-                                归档
+                                歸檔
                             
                         </a>
                     </li>
@@ -236,13 +236,13 @@
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
         <span class="pc">2023-03-12 00:03:26</span>
         <span class="mobile">2023-03-12 00:03</span>
-        <span class="hover-info">创建</span>
+        <span class="hover-info">撰寫</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="pc">2023-03-15 02:06:51</span>
-            <span class="mobile">2023-03-15 02:06</span>
+            <span class="pc">2023-03-15 13:47:23</span>
+            <span class="mobile">2023-03-15 13:47</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -264,12 +264,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>768 字</span>
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>1.2k 字數</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>2 分钟</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 分鐘</span>
         </span>
     
     
@@ -285,60 +285,62 @@
             
 
             <div class="article-content markdown-body">
-                <h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><p>2023&#x2F;3&#x2F;15 1：55</p>
+                <h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><h3 id="以下是个人对各个参数的理解"><a href="#以下是个人对各个参数的理解" class="headerlink" title="以下是个人对各个参数的理解"></a>以下是个人对各个参数的理解</h3><table>
+<thead>
+<tr>
+<th align="center">设置参数</th>
+<th align="center">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">IN5</td>
+<td align="center">Single-ended与Differential，单值输入和差分输入</td>
+</tr>
+<tr>
+<td align="center">Clock Prescaler</td>
+<td align="center">ADC时钟分频，分频后结果要小于36MHz</td>
+</tr>
+<tr>
+<td align="center">Resolution</td>
+<td align="center">采样位数，决定ADC的采样精度</td>
+</tr>
+<tr>
+<td align="center">Scan Conversion Mode</td>
+<td align="center">当开启多通道时需要开启，进行通道的扫描</td>
+</tr>
+<tr>
+<td align="center">Continuous Conversion Mode</td>
+<td align="center">持续转换模式，意思是经过一次转换后自动开启下一次转换，当开启定时器触发时需要关闭</td>
+</tr>
+<tr>
+<td align="center">Discontinuous Conversion Mode</td>
+<td align="center">单次转换模式，意思是经过一次转换后直接结束，需要自己再次开启（<em>用什么函数</em>）#<em>单次转换模式ADC只采集一次数据就停止采集，使用单次转换模式需要转换通道数大于1</em></td>
+</tr>
+<tr>
+<td align="center">End Of Conversion Selection</td>
+<td align="center">end of sequence of conversion&#x2F;end of single conversion</td>
+</tr>
+<tr>
+<td align="center">Overrun behaviour</td>
+<td align="center">有prevered和overwritten,主要决定如果要采样的数据超过给的空间,是让其溢出还是从头开始写</td>
+</tr>
+<tr>
+<td align="center">Conversion Data Management Mode</td>
+<td align="center">DMA Circular Mode&#x2F;DMA One shot mode&#x2F;Regular Conversion data stored in DR register only&#x2F;DFSDM Mode(需要测试DMA Circular Mode与One shot 的区别)</td>
+</tr>
+</tbody></table>
+<p>根据内容与自己的选择进行ADC的配置,<strong>需要采数据并且对其进行处理的话,需要将DMA开成Normal</strong>,至于Half word,暂未深入理解为什么这样配置</p>
+<blockquote>
+<p>为了便于直接使用，这里的数据类型应与DMA配置的Data Width对应。我使用的MCU其ADC转换精度为12位，因此使用HalfWord(16bit)足以，因此配置时两边都使用了默认的HalfWord，该配置使DMA每次从ADC搬运16bit数据到地址testbuffer，下一波数据搬运到testbuffer+16bit的地址中，再下一次到testbuffer+2*16bit。</p>
+<p><strong>此段来自于以下的链接博客,讲的比较清楚</strong></p>
+</blockquote>
+<hr>
+<p>2023&#x2F;3&#x2F;15 1：55</p>
 <p>以下问题在一篇博客的表格中有了答案</p>
 <p>在此贴出链接	</p>
-<p>[]: <a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/tpytpytpy/article/details/122563117" >https://blog.csdn.net/tpytpytpy/article/details/122563117 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>	“ADC+DMA踩坑及傻瓜式解析”</p>
+<p>[引用链接1]: <a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/tpytpytpy/article/details/122563117" >https://blog.csdn.net/tpytpytpy/article/details/122563117 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>	“ADC+DMA踩坑及傻瓜式解析”</p>
+<hr>
 <p>​	</p>
-<p>此处是配置单端输入和差分输入</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220426766.png"
-                      alt="image-20230311220426766" style="zoom:50%;" 
-                >
-
-
-
-
-
-<p>​		注意最大频率是36MHz</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220520258.png"
-                      alt="image-20230311220520258" style="zoom:50%;" 
-                >
-
-
-
-
-
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311220623548.png"
-                      alt="image-20230311220623548" style="zoom:50%;" 
-                >
-
-<p>​		用ADC并搭配DMA的必须开连续转换模式</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311221057261.png"
-                      alt="image-20230311221057261" style="zoom: 67%;" 
-                >
-
-<p>​		单通道转换完成作为结束</p>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311221534821.png"
-                      alt="image-20230311221534821" style="zoom:50%;" 
-                >
-
-
-
 <h2 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h2><h3 id="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"><a href="#DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式" class="headerlink" title="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"></a>DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</h3><img  
                      lazyload
                      src="/images/loading.svg"
@@ -365,9 +367,9 @@
 <p>如果ADC的连续转换模式意思是完成转换后自己开启，那么还有触发的事情吗？？？&#x2F;未解之谜</p>
 <h4 id="调试结果："><a href="#调试结果：" class="headerlink" title="调试结果："></a>调试结果：</h4><ol>
 <li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Disable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA one shot</strong></p>
-<h5 id="结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形"><a href="#结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形" class="headerlink" title="结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形"></a>结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</h5></li>
+<h6 id="结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形"><a href="#结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形" class="headerlink" title="结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形"></a>结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</h6></li>
 <li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Enable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA Circular Mode</strong>，DMA的模式设为<strong>normal</strong></p>
-<h5 id="结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失"><a href="#结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失" class="headerlink" title="结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失"></a>结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</h5><img  
+<h6 id="结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失"><a href="#结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失" class="headerlink" title="结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失"></a>结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</h6><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230312142038580.png"
@@ -415,21 +417,21 @@
 <li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似，需要重复调用函数（？存疑）</em></p>
 </li>
 </ol>
-
+<h3 id="当用定时器触发时-出现奇怪尖峰-但是单次采集没有"><a href="#当用定时器触发时-出现奇怪尖峰-但是单次采集没有" class="headerlink" title="当用定时器触发时,出现奇怪尖峰,但是单次采集没有"></a>当用定时器触发时,出现奇怪尖峰,但是单次采集没有</h3><h6 id="2023-x2F-3-x2F-15"><a href="#2023-x2F-3-x2F-15" class="headerlink" title="2023&#x2F;3&#x2F;15"></a>2023&#x2F;3&#x2F;15</h6>
             </div>
 
             
                 <div class="post-copyright-info">
                     <div class="article-copyright-info-container">
     <ul>
-        <li>本文标题：STM32H7使用ADC的注意事项与所遇问题</li>
-        <li>本文作者：jiu10</li>
-        <li>创建时间：2023-03-12 00:03:26</li>
+        <li>文章標題：STM32H7使用ADC的注意事项与所遇问题</li>
+        <li>文章作者：jiu10</li>
+        <li>撰寫時間：2023-03-12 00:03:26</li>
         <li>
-            本文链接：https://redefine.ohevan.com/2023/03/12/STM32H7使用ADC的注意事项与所遇问题/
+            永久連結：https://redefine.ohevan.com/2023/03/12/STM32H7使用ADC的注意事项与所遇问题/
         </li>
         <li>
-            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+            版權宣告：這個網站所有文章均使用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 授權。
         </li>
     </ul>
 </div>
@@ -479,9 +481,9 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div class="toc-title">此页目录</div>
+        <div class="toc-title">此頁目錄</div>
         <div class="page-title">STM32H7使用ADC的注意事项与所遇问题</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8CADC%E9%85%8D%E7%BD%AE%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F"><span class="nav-text">进行ADC配置时候需要注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">碰到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA%E7%9A%84%E5%8D%95%E6%AC%A1%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%BE%AA%E7%8E%AF%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8EADC%E7%9A%84%E8%BF%9E%E7%BB%AD%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8D%95%E6%AC%A1%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F"><span class="nav-text">DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E9%97%AE%E9%A2%98%EF%BC%9A%E5%BD%93%E8%BF%9B%E8%A1%8C%E9%87%87%E6%B3%A2%E6%97%B6%E4%BC%9A%E4%B8%8D%E8%BF%9E%E7%BB%AD"><span class="nav-text">目前问题：当进行采波时会不连续</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%89%93%E7%AE%97%EF%BC%9A"><span class="nav-text">调试打算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="nav-text">调试结果：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%EF%BC%9A%E6%B2%A1%E6%9C%89%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%97%A0%E6%B3%95%E8%BE%93%E5%87%BA%E6%B3%A2%E5%BD%A2"><span class="nav-text">结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%B3%A2%E5%BD%A2%E6%AD%A3%E5%B8%B8%EF%BC%8C%E9%97%B4%E6%96%AD%E6%B6%88%E5%A4%B1"><span class="nav-text">结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-text">结论</span></a></li></ol></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8CADC%E9%85%8D%E7%BD%AE%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F"><span class="nav-text">进行ADC配置时候需要注意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8B%E6%98%AF%E4%B8%AA%E4%BA%BA%E5%AF%B9%E5%90%84%E4%B8%AA%E5%8F%82%E6%95%B0%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">以下是个人对各个参数的理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">碰到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA%E7%9A%84%E5%8D%95%E6%AC%A1%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%BE%AA%E7%8E%AF%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8EADC%E7%9A%84%E8%BF%9E%E7%BB%AD%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8D%95%E6%AC%A1%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F"><span class="nav-text">DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E9%97%AE%E9%A2%98%EF%BC%9A%E5%BD%93%E8%BF%9B%E8%A1%8C%E9%87%87%E6%B3%A2%E6%97%B6%E4%BC%9A%E4%B8%8D%E8%BF%9E%E7%BB%AD"><span class="nav-text">目前问题：当进行采波时会不连续</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%89%93%E7%AE%97%EF%BC%9A"><span class="nav-text">调试打算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="nav-text">调试结果：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%EF%BC%9A%E6%B2%A1%E6%9C%89%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%97%A0%E6%B3%95%E8%BE%93%E5%87%BA%E6%B3%A2%E5%BD%A2"><span class="nav-text">结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%B3%A2%E5%BD%A2%E6%AD%A3%E5%B8%B8%EF%BC%8C%E9%97%B4%E6%96%AD%E6%B6%88%E5%A4%B1"><span class="nav-text">结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%A7%A6%E5%8F%91%E6%97%B6-%E5%87%BA%E7%8E%B0%E5%A5%87%E6%80%AA%E5%B0%96%E5%B3%B0-%E4%BD%86%E6%98%AF%E5%8D%95%E6%AC%A1%E9%87%87%E9%9B%86%E6%B2%A1%E6%9C%89"><span class="nav-text">当用定时器触发时,出现奇怪尖峰,但是单次采集没有</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2023-x2F-3-x2F-15"><span class="nav-text">2023&#x2F;3&#x2F;15</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
 
     </div>
 </div>
@@ -515,20 +517,20 @@
             <div class="website-count info-item">
                 
                     <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
-                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                        讀者&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
                     <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
-                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                        閱覽&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="powered-by-container"><?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 框架</span>
                 <br> 
-            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v1.2.0</a>
+            <span class="theme-version-container">主題&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v1.2.0</a>
         </div>
         
         
@@ -537,7 +539,7 @@
                 2022/8/17 11:45:14
             </div>
             <div>
-                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+                博客已運行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小時 <span class="odometer" id="runtime_minutes"></span> 分鐘 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
         
         
