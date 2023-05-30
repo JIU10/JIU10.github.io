@@ -358,58 +358,6 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2023/05/26/DSP%E9%A3%9F%E7%94%A8BUG%E6%B1%87%E6%80%BB%E5%8F%8A%E5%85%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h1 id="DSP食用所遇BUG及其解决方案"><a href="#DSP食用所遇BUG及其解决方案" class="headerlink" title="DSP食用所遇BUG及其解决方案"></a>DSP食用所遇BUG及其解决方案</h1><h4 id="栈堆溢出问题"><a href="#栈堆溢出问题" class="headerlink" title="栈堆溢出问题"></a>栈堆溢出问题</h4><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line">warning #<span class="number">10210</span>-D: creating <span class="string">&quot;.sysmem&quot;</span> section with <span class="keyword">default</span> size of <span class="number">0x400</span>; use the -heap option to change the <span class="keyword">default</span> size</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h5><p>CCS设置的项目默认栈堆大小为0x400，这是一个比较小的数字，很容易超出，在写项目的时候调用LIN的DSP库时产生了堆溢出问题</p>
-<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><ol>
-<li><p>在CCS设置堆栈大小</p>
-<p>Properties-&gt;Build-&gt;C2000 Linker-&gt;Basic Options</p>
-</li>
-<li><p>直接在.cmd文件中编写栈堆大小（较好）</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">--stack_size=0x0800  //设置堆，溢出会导致调试不正常等问题</span><br><span class="line">--heap_size=0x5500  //设置栈</span><br></pre></td></tr></table></figure></div></li>
-</ol>
-<h4 id="Device-Init不执行问题"><a href="#Device-Init不执行问题" class="headerlink" title="Device_Init不执行问题"></a>Device_Init不执行问题</h4><h5 id="产生原因-1"><a href="#产生原因-1" class="headerlink" title="产生原因"></a>产生原因</h5><p>加上LIN写的DSP初始化就会出现这个问题，目前怀疑是版本不兼容，但是这个情况之前也有出现过，这个时候都是配置不当导致的</p>
-<h5 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h5><p>尚未解决</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/05/16/SCI/</url>
-    <content><![CDATA[<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230516192619321.png"
-                      alt="image-20230516192619321"
-                ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230516192649404.png"
-                      alt="image-20230516192649404"
-                ></p>
-<h1 id="FSI"><a href="#FSI" class="headerlink" title="FSI"></a>FSI</h1><h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
-<li>确保可靠的高速串行通信通过隔离屏障(提供电流隔离</li>
-<li>不同的电路没有共同的电源和地)由独立的发送(FSITX)和接收(FSIRX)核组成</li>
-<li>每个核心都独立配置和运行点对点(单主节点&#x2F;单远端节点)快速传输</li>
-<li>50 MHz双数据速率(100 Mbps @ 50 MHz时钟)单或双数据线</li>
-<li>可编程数据长度硬件或软件计算的CRC</li>
-<li>帧错误检测</li>
-<li>每个FSI核心有两个中断</li>
-</ul>
-<h2 id="UART-x2F-SCI"><a href="#UART-x2F-SCI" class="headerlink" title="UART&#x2F;SCI"></a>UART&#x2F;SCI</h2><p>串行通信接口(SCI)SCl是一个双线异步串行端口(也称为UART)，它支持处理器和其他使用标准非归零(NRZ)格式的异步外设之间的通信。采用接收和发送FIFO来减少服务开销。SClI发送和接收寄存器都是双缓冲的，以防止数据冲突并允许有效的CPU使用。此外，C28x SCl是一个全双工接口，提供同步数据发送和接收。奇偶校验和数据格式化也被设计成由端口硬件完成，进一步减少了软件开销。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230516195511159.png"
-                      alt="image-20230516195511159"
-                ></p>
-<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*		关键函数		*/</span></span><br><span class="line">SCI_writeCharArray(SCI_Name,(<span class="type">uint16_t</span> *)Array_Point,Array_Number);</span><br><span class="line">SCI_readCharBlockingFIFO(SCI_Name);<span class="comment">//阻塞函数，获取终端发送的数据</span></span><br><span class="line">SCI_writeCharBlockingFIFO(mySCIA_BASE, receivedChar);</span><br></pre></td></tr></table></figure></div>
-
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
     <url>/2023/05/05/DSP%20Timer/</url>
     <content><![CDATA[<h1 id="DSP-TIMER-GPIO食用过程"><a href="#DSP-TIMER-GPIO食用过程" class="headerlink" title="DSP TIMER GPIO食用过程"></a>DSP TIMER GPIO食用过程</h1><h2 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h2><p>INTOSC2 内部主振荡器 10Mhz</p>
 <p>INTOSC1 内部备份振荡器</p>
@@ -465,15 +413,6 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2023/05/24/DSP%E9%87%8D%E8%A6%81%E9%93%BE%E6%8E%A5%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<h1 id="DSP重要链接指南"><a href="#DSP重要链接指南" class="headerlink" title="DSP重要链接指南"></a>DSP重要链接指南</h1><p>关于DSP专属的FPU DSP库官方食用指南链接：<a class="link"   href="https://dev.ti.com/tirex/explore/node?node=A__AB6r3RSS-5RAuCWTkP7IBA__c2000ware_software_package__gYkahfz__LATEST" >FPU User’s Guide (ti.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<ul>
-<li>包含C2000dsp库文件结构讲解</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
     <url>/2023/05/10/dma%E9%A3%9F%E7%94%A8/</url>
     <content><![CDATA[<h1 id="DSP-DMA食用"><a href="#DSP-DMA食用" class="headerlink" title="DSP DMA食用"></a>DSP DMA食用</h1><h4 id="设备存在意义"><a href="#设备存在意义" class="headerlink" title="设备存在意义"></a>设备存在意义</h4><p>独立于CPU，搬运数据，减轻CPU压力</p>
 <p><strong>使用乒乓寄存器，提高效率</strong></p>
@@ -523,5 +462,14 @@
     <title></title>
     <url>/2023/05/06/EPWM/</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>DSP重要链接指路</title>
+    <url>/2023/05/31/DSP%E9%87%8D%E8%A6%81%E9%93%BE%E6%8E%A5%E6%8C%87%E8%B7%AF/</url>
+    <content><![CDATA[<p>关于DSP专属的FPU DSP库官方食用指南链接：<a class="link"   href="https://dev.ti.com/tirex/explore/node?node=A__AB6r3RSS-5RAuCWTkP7IBA__c2000ware_software_package__gYkahfz__LATEST" >FPU User’s Guide (ti.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<ul>
+<li>包含C2000dsp库文件结构讲解</li>
+</ul>
+]]></content>
   </entry>
 </search>
