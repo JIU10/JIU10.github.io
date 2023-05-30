@@ -472,4 +472,29 @@
 </ul>
 ]]></content>
   </entry>
+  <entry>
+    <title>DSP所遇BUG汇总</title>
+    <url>/2023/05/31/DSP%E6%89%80%E9%81%87BUG%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<h4 id="栈堆溢出问题"><a href="#栈堆溢出问题" class="headerlink" title="栈堆溢出问题"></a>栈堆溢出问题</h4><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line">warning #<span class="number">10210</span>-D: creating <span class="string">&quot;.sysmem&quot;</span> section with <span class="keyword">default</span> size of <span class="number">0x400</span>; use the -heap option to change the <span class="keyword">default</span> size</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h5><p>CCS设置的项目默认栈堆大小为0x400，这是一个比较小的数字，很容易超出，在写项目的时候调用LIN的DSP库时产生了堆溢出问题</p>
+<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><ol>
+<li><p>在CCS设置堆栈大小</p>
+<p>Properties-&gt;Build-&gt;C2000 Linker-&gt;Basic Options</p>
+</li>
+<li><p>直接在.cmd文件中编写栈堆大小（较好）</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">--stack_size=0x0800  //设置堆，溢出会导致调试不正常等问题</span><br><span class="line">--heap_size=0x5500  //设置栈</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<h4 id="Device-Init不执行问题"><a href="#Device-Init不执行问题" class="headerlink" title="Device_Init不执行问题"></a>Device_Init不执行问题</h4><h5 id="产生原因-1"><a href="#产生原因-1" class="headerlink" title="产生原因"></a>产生原因</h5><p>加上LIN写的DSP初始化就会出现这个问题，目前怀疑是版本不兼容，但是这个情况之前也有出现过，这个时候都是配置不当导致的</p>
+<h5 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h5><p>经过探究，可能是TI版本兼容性导致的问题，无解，回退版本。</p>
+<p>注意TI兼容性确实有点点点不好，<strong>且例程中给出的cla等部分选择是错的，要在Properties里对照手册改回（也是导致玄学bug的原因）</strong></p>
+<h4 id="诡异的C语言报错"><a href="#诡异的C语言报错" class="headerlink" title="诡异的C语言报错"></a>诡异的C语言报错</h4><h5 id="产生原因-2"><a href="#产生原因-2" class="headerlink" title="产生原因"></a>产生原因</h5><p>写了for(uint16_t i&#x3D;0;i&lt;100;i++)出现报错，说expression错误，C语言版本选择为C89</p>
+<h5 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h5><p>C语言版本改回C99，在Properties改</p>
+<h4 id="SYSCFG外部打开显示找不到对应版本的C2000w"><a href="#SYSCFG外部打开显示找不到对应版本的C2000w" class="headerlink" title="SYSCFG外部打开显示找不到对应版本的C2000w"></a>SYSCFG外部打开显示找不到对应版本的C2000w</h4><h5 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h5><p>没设置上面的板卡（</p>
+<h5 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h5><p>设置好</p>
+]]></content>
+      <tags>
+        <tag>dsp bug f28379d</tag>
+      </tags>
+  </entry>
 </search>
