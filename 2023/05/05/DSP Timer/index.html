@@ -10,18 +10,18 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2023/03/12/stm32h7使用adc的注意事项与所遇问题/"/>
+    <link rel="canonical" href="http://example.com/2023/05/05/dsp timer/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="STM32H7使用ADC的注意事项与所遇问题">
+    <meta property="og:title" content="JIU&#39;s home">
     <meta property="og:description" content="Hexo Theme Redefine">
-    <meta property="og:url" content="http://example.com2023/03/12/STM32H7使用ADC的注意事项与所遇问题/">
+    <meta property="og:url" content="http://example.com2023/05/05/DSP Timer/">
     
     <meta property="og:site_name" content="Jiu10&#39;s Mooland">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="STM32H7使用ADC的注意事项与所遇问题">
+    <meta name="twitter:title" content="JIU&#39;s home">
     <meta name="twitter:description" content="Hexo Theme Redefine">
     <meta name="twitter:image" content="/images/redefine-logo.svg">
     <!--- Icon Part-->
@@ -31,8 +31,6 @@
     <link rel="shortcut icon" href="/images/redefine-logo.svg">
     
     <title>
-        
-            STM32H7使用ADC的注意事项与所遇问题 -
         
         Jiu10&#39;s Mooland
     </title>
@@ -212,7 +210,7 @@
             
             
                 <div class="article-title">
-                    <h1 class="article-title-regular">STM32H7使用ADC的注意事项与所遇问题</h1>
+                    <h1 class="article-title-regular"></h1>
                 </div>
             
                 
@@ -234,42 +232,31 @@
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="pc">2023-03-12 00:03:26</span>
-        <span class="mobile">2023-03-12 00:03</span>
+        <span class="pc">2023-05-05 19:49:02</span>
+        <span class="mobile">2023-05-05 19:49</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="pc">2023-03-15 13:47:23</span>
-            <span class="mobile">2023-03-15 13:47</span>
+            <span class="pc">2023-05-06 00:49:09</span>
+            <span class="mobile">2023-05-06 00:49</span>
             <span class="hover-info">更新</span>
         </span>
     
 
     
     
-        <span class="article-tags article-meta-item">
-            <i class="fa-regular fa-tags"></i>&nbsp;
-            <ul>
-                
-                    <li>
-                        <a href="/tags/stm32h7-adc-dma/">stm32h7 adc dma</a>&nbsp;
-                    </li>
-                
-            </ul>
-        </span>
-    
 
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>1.2k 字</span>
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>602 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 分钟</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>2 分钟</span>
         </span>
     
     
@@ -285,150 +272,68 @@
             
 
             <div class="article-content markdown-body">
-                <h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><h3 id="以下是个人对各个参数的理解"><a href="#以下是个人对各个参数的理解" class="headerlink" title="以下是个人对各个参数的理解"></a>以下是个人对各个参数的理解</h3><table>
-<thead>
-<tr>
-<th align="center">设置参数</th>
-<th align="center">内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">IN5</td>
-<td align="center">Single-ended与Differential，单值输入和差分输入</td>
-</tr>
-<tr>
-<td align="center">Clock Prescaler</td>
-<td align="center">ADC时钟分频，分频后结果要小于36MHz</td>
-</tr>
-<tr>
-<td align="center">Resolution</td>
-<td align="center">采样位数，决定ADC的采样精度</td>
-</tr>
-<tr>
-<td align="center">Scan Conversion Mode</td>
-<td align="center">当开启多通道时需要开启，进行通道的扫描</td>
-</tr>
-<tr>
-<td align="center">Continuous Conversion Mode</td>
-<td align="center">持续转换模式，意思是经过一次转换后自动开启下一次转换，当开启定时器触发时需要关闭</td>
-</tr>
-<tr>
-<td align="center">Discontinuous Conversion Mode</td>
-<td align="center">单次转换模式，意思是经过一次转换后直接结束，需要自己再次开启（<em>用什么函数</em>）#<em>单次转换模式ADC只采集一次数据就停止采集，使用单次转换模式需要转换通道数大于1</em></td>
-</tr>
-<tr>
-<td align="center">End Of Conversion Selection</td>
-<td align="center">end of sequence of conversion&#x2F;end of single conversion</td>
-</tr>
-<tr>
-<td align="center">Overrun behaviour</td>
-<td align="center">有prevered和overwritten,主要决定如果要采样的数据超过给的空间,是让其溢出还是从头开始写</td>
-</tr>
-<tr>
-<td align="center">Conversion Data Management Mode</td>
-<td align="center">DMA Circular Mode&#x2F;DMA One shot mode&#x2F;Regular Conversion data stored in DR register only&#x2F;DFSDM Mode(需要测试DMA Circular Mode与One shot 的区别)</td>
-</tr>
-</tbody></table>
-<p>根据内容与自己的选择进行ADC的配置,<strong>需要采数据并且对其进行处理的话,需要将DMA开成Normal</strong>,至于Half word,暂未深入理解为什么这样配置</p>
-<blockquote>
-<p>为了便于直接使用，这里的数据类型应与DMA配置的Data Width对应。我使用的MCU其ADC转换精度为12位，因此使用HalfWord(16bit)足以，因此配置时两边都使用了默认的HalfWord，该配置使DMA每次从ADC搬运16bit数据到地址testbuffer，下一波数据搬运到testbuffer+16bit的地址中，再下一次到testbuffer+2*16bit。</p>
-<p><strong>此段来自于以下的链接博客,讲的比较清楚</strong></p>
-</blockquote>
-<hr>
-<p>2023&#x2F;3&#x2F;15 1：55</p>
-<p>以下问题在一篇博客的表格中有了答案</p>
-<p>在此贴出链接	</p>
-<p>[引用链接1]: <a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/tpytpytpy/article/details/122563117" >https://blog.csdn.net/tpytpytpy/article/details/122563117 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>	“ADC+DMA踩坑及傻瓜式解析”</p>
-<hr>
-<p>​	</p>
-<h2 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h2><h3 id="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"><a href="#DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式" class="headerlink" title="DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式"></a>DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</h3><img  
+                <h1 id="DSP-TIMER-GPIO食用过程"><a href="#DSP-TIMER-GPIO食用过程" class="headerlink" title="DSP TIMER GPIO食用过程"></a>DSP TIMER GPIO食用过程</h1><h2 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h2><p>INTOSC2 内部主振荡器 10Mhz</p>
+<p>INTOSC1 内部备份振荡器</p>
+<p>XTAL 外部振荡器</p>
+<p>AUXCLKIN 辅助时钟输入</p>
+<p><strong>OSCCLK 振荡时钟 默认时钟作为GPIO,CPU等</strong>，在INTOSC2,XTAL,INTOSC1中选一个</p>
+<h2 id="TIMER"><a href="#TIMER" class="headerlink" title="TIMER"></a>TIMER</h2><h4 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h4><ul>
+<li><p>32位计数器寄存器TIMH:TIM装载了周期寄存器PRDH:PRD中的值（<strong>预装载值</strong>）</p>
+</li>
+<li><p>计数器每(TPR[TDDRH:TDDR]+1)个SYSCLK周期递减一次，其中TDDRH:TDDR是<strong>定时器分频器</strong></p>
+</li>
+<li><p>当计数器达到0时，一个定时器中断输出信号产生一个中断脉冲TINT</p>
+</li>
+</ul>
+<p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311222118929.png"
-                      alt="image-20230311222118929" style="zoom:50%;" 
-                >
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230505200822301.png"
+                      alt="image-20230505200822301"
+                ></p>
+<h2 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h2><p>特别之处：</p>
+<p>默认情况下，所有引脚都配置为GPIO，当配置为信号输入引脚时，可以指定限定采样周期以去除不必要的噪声。可选地，每个引脚都有一个内部上拉电阻，可以启用，以便在没有外部信号驱动引脚时保持输入引脚处于已知状态。</p>
+<p>如果引脚配置为GPIO，则使用方向(DIR)寄存器指定引脚作为输入或输出。</p>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><ol>
+<li><p>配置复用</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GPIO_setPinConfig(pinConfig);</span><br></pre></td></tr></table></figure></div>
 
 
-
-<p>2023&#x2F;3&#x2F;11	</p>
-<h4 id="目前问题：当进行采波时会不连续"><a href="#目前问题：当进行采波时会不连续" class="headerlink" title="目前问题：当进行采波时会不连续"></a>目前问题：当进行采波时会不连续</h4><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311223915720.png"
-                      alt="image-20230311223915720" style="zoom:50%;" 
-                >
-
-<p>猜测：看的教程说ADC+DMA必须选择ADC的连续转换模式，而ADC连续转换模式必须要求DMA是循环模式，猜测是DMA的循环模式导致的间断点，因为目前是只采集一次，但是软件触发（这里有个问题，如果开了连续转换模式，软件触发是否有用），只开了一次，而DMA一直在循环搬运导致数据出现问题？</p>
-<h4 id="调试打算："><a href="#调试打算：" class="headerlink" title="调试打算："></a>调试打算：</h4><ol>
-<li>将ADC改成单次转换模式，并将DMA改成单次模式，观察现象。</li>
-<li>如果没有间断点，说明软件触发对于连续转换模式是有用的，它导致了转换的停止，但DMA没有停止，故产生不连续波。</li>
-<li>如果不是，寻找其他原因。</li>
-</ol>
-<p>如果ADC的连续转换模式意思是完成转换后自己开启，那么还有触发的事情吗？？？&#x2F;未解之谜</p>
-<h4 id="调试结果："><a href="#调试结果：" class="headerlink" title="调试结果："></a>调试结果：</h4><ol>
-<li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Disable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA one shot</strong></p>
-<h6 id="结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形"><a href="#结果：没有进入HAL-ADC-ConvCpltCallback函数，无法输出波形" class="headerlink" title="结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形"></a>结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</h6></li>
-<li><p>将<strong>Continuous Conversion Mode</strong>设为<strong>Enable</strong>，<strong>Conversion Data Management Mode</strong>设为<strong>DMA Circular Mode</strong>，DMA的模式设为<strong>normal</strong></p>
-<h6 id="结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失"><a href="#结果进入HAL-ADC-ConvCpltCallback函数，波形正常，间断消失" class="headerlink" title="结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失"></a>结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</h6><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230312142038580.png"
-                      alt="image-20230312142038580" style="zoom:50%;" 
-                ></li>
-</ol>
-<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><ol>
-<li><p>ADC连续转换模式可以由软件触发和停止，用HAL_ADC_Stop_DMA和HAL_ADC_Start_DMA对其进行控制，<strong>但是如果用TIM进行触发的话，请关闭ADC连续转换模式，因为它的开启会使得ADC的步调不听定时器的话。</strong></p>
 </li>
-<li><p>DMA选项页的Mode的<strong>normal</strong>和<strong>circular</strong></p>
-<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HAL_ADC_Start_DMA(&amp;hadc1,testbuffer,BUFF_NUM)；</span><br></pre></td></tr></table></figure></div>
+<li><p>配置引脚属性</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pin is the GPTO pin number</span></span><br><span class="line"><span class="comment">// pinType can be the following values</span></span><br><span class="line"><span class="comment">//GPIO_PIN_TYPE_STD</span></span><br><span class="line"><span class="comment">//GPIO_PIN_TYPE_PULLUP</span></span><br><span class="line"><span class="comment">// GPIO_PIN_TYPE_OD</span></span><br><span class="line"><span class="comment">//GPIO_PIN_TYPE_INVERT</span></span><br><span class="line"><span class="comment">// INVERT may be ORed with STD and PULLUP</span></span><br><span class="line"></span><br><span class="line">GPIO_setPadConfig(pin,pinType);</span><br></pre></td></tr></table></figure></div>
 
 
-
-<table>
-<thead>
-<tr>
-<th>1</th>
-<th>1</th>
-<th>1</th>
-<th>1</th>
-<th>1</th>
-<th>1</th>
-<th>2</th>
-<th>2</th>
-<th>2</th>
-<th>2</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody></table>
-<p>如上图表格中，第一行代表单次模式，第二行代表DMA，先接收6个数据，然后接收5个数据，单次模式就会数据溢出，而DMA循环模式就会自动重启从第一个开始存，本程序中接收的数据是固定的，可以选择normal模式，选择circular会导致前面数据被覆盖，然后导致截断，<strong>总而言之，Circular就是采集BUFF_NUM后会自动重新到数组第一位继续搬运，而Normal则是采集BUFF_NUM之后自动停止，等待下一次HAL_ADC_Start_DMA的调用</strong></p>
 </li>
-<li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似，需要重复调用函数（？存疑）</em></p>
-</li>
+<li><p>配置引脚方向</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GPIO_setDirectionMode(pin,pinIO);</span><br><span class="line"><span class="comment">//pin is pin number</span></span><br><span class="line"><span class="comment">//pinIO :GPIO_DIR_MODE_IN GPIO_DIR_MODE_OUT</span></span><br></pre></td></tr></table></figure></div></li>
 </ol>
-<h3 id="当用定时器触发时-出现奇怪尖峰-但是单次采集没有"><a href="#当用定时器触发时-出现奇怪尖峰-但是单次采集没有" class="headerlink" title="当用定时器触发时,出现奇怪尖峰,但是单次采集没有"></a>当用定时器触发时,出现奇怪尖峰,但是单次采集没有</h3><h6 id="2023-x2F-3-x2F-15"><a href="#2023-x2F-3-x2F-15" class="headerlink" title="2023&#x2F;3&#x2F;15"></a>2023&#x2F;3&#x2F;15</h6>
+<h4 id="输入模式的采样设置"><a href="#输入模式的采样设置" class="headerlink" title="输入模式的采样设置"></a>输入模式的采样设置</h4><p>大概：</p>
+<p>输入限定方案非常灵活，可以为一组GPIO引脚配置输入限定类型。在GPIO输入引脚的情况下，资格可以指定为仅同步到SYSCLKOuT (CPUx)。SYSCLK(多核设备)或通过采样窗口进行鉴定。对于配置为外设输入的引脚，除了同步到SYSCLKOUT (CPUx)之外，输入也可以是异步的。SYSCLK(多核设备)或由采样窗口限定。采样周期由GPxCTRL寄存器中的资格周期(QUALPRDn)位指定。</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pin is the GPIO pin number</span></span><br><span class="line"><span class="comment">// qualification values are:</span></span><br><span class="line"><span class="comment">// GPIO_QUAL_SYNC</span></span><br><span class="line"><span class="comment">// GPIO_QUAL_3SAMPLE</span></span><br><span class="line"><span class="comment">// GPIO_QUAL_6SAMPLE</span></span><br><span class="line"><span class="comment">// GPIO_QUAL_ASYNC</span></span><br><span class="line">GPIO_setQualificationMode(pin, qualification);</span><br></pre></td></tr></table></figure></div>
+
+
+
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pin is the GPIO pin number</span></span><br><span class="line"><span class="comment">// divider is the value by which the frequency of SYSCLKOUT is divided and it can be 1</span></span><br><span class="line"><span class="comment">// or an even value between 2 and 510 inclusive</span></span><br><span class="line">GPIO_setQualificationPeriod(pin, divider);</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="输入模式的数据控制"><a href="#输入模式的数据控制" class="headerlink" title="输入模式的数据控制"></a>输入模式的数据控制</h4><p>引脚函数</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pin is the GPIO pin number</span></span><br><span class="line"><span class="comment">// outVal parameter is the value written to the pin</span></span><br><span class="line">GPIO_readPin(pin);</span><br><span class="line">GPIO_writePin(pin, outVal);</span><br><span class="line">GPIO_togglePin(pin);</span><br></pre></td></tr></table></figure></div>
+
+<p>端口函数</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// port is the GPIO port: GPIO_PORT_x (x is the port letter)</span></span><br><span class="line"><span class="comment">// outVal parameter is bit-packed value (32 pins) written to the port</span></span><br><span class="line"><span class="comment">// pinMask parameter is a bit-packed value (32 pins) masking the port</span></span><br><span class="line">GPIO_readPortData(port);</span><br><span class="line">GPIO_writePortData(port, outVal);</span><br><span class="line">GPIO_setPortPins(port, pinMask);</span><br><span class="line">GPIO_clearPortPins(port, pinMask)</span><br><span class="line">GPIO_togglePortPins(port, pinMask)</span><br></pre></td></tr></table></figure></div>
+
+
             </div>
 
             
                 <div class="post-copyright-info">
                     <div class="article-copyright-info-container">
     <ul>
-        <li>本文标题：STM32H7使用ADC的注意事项与所遇问题</li>
+        <li>本文标题：</li>
         <li>本文作者：jiu10</li>
-        <li>创建时间：2023-03-12 00:03:26</li>
+        <li>创建时间：2023-05-05 19:49:02</li>
         <li>
-            本文链接：https://redefine.ohevan.com/2023/03/12/STM32H7使用ADC的注意事项与所遇问题/
+            本文链接：https://redefine.ohevan.com/2023/05/05/DSP Timer/
         </li>
         <li>
             版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -440,14 +345,6 @@
             
 
             
-                <ul class="post-tags-box">
-                    
-                        <li class="tag-item">
-                            <a href="/tags/stm32h7-adc-dma/">#stm32h7 adc dma</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            
 
             
 
@@ -457,13 +354,13 @@
                         <div class="article-prev">
                             <a class="prev"
                             rel="prev"
-                            href="/2023/03/17/AD9910%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B/"
+                            href="/2023/05/06/EPWM/"
                             >
                                 <span class="left arrow-icon flex-center">
                                     <i class="fa-solid fa-chevron-left"></i>
                                 </span>
                                 <span class="title flex-center">
-                                    <span class="post-nav-title-item">AD9910使用过程</span>
+                                    <span class="post-nav-title-item"></span>
                                     <span class="post-nav-item">上一篇</span>
                                 </span>
                             </a>
@@ -473,10 +370,10 @@
                         <div class="article-next">
                             <a class="next"
                             rel="next"
-                            href="/2023/03/11/hello-world/"
+                            href="/2023/05/05/DSP%20ADC%20note/"
                             >
                                 <span class="title flex-center">
-                                    <span class="post-nav-title-item">Hello World</span>
+                                    <span class="post-nav-title-item"></span>
                                     <span class="post-nav-item">下一篇</span>
                                 </span>
                                 <span class="right arrow-icon flex-center">
@@ -497,8 +394,8 @@
                 <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">STM32H7使用ADC的注意事项与所遇问题</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8CADC%E9%85%8D%E7%BD%AE%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F"><span class="nav-text">进行ADC配置时候需要注意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8B%E6%98%AF%E4%B8%AA%E4%BA%BA%E5%AF%B9%E5%90%84%E4%B8%AA%E5%8F%82%E6%95%B0%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">以下是个人对各个参数的理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">碰到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA%E7%9A%84%E5%8D%95%E6%AC%A1%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%BE%AA%E7%8E%AF%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8EADC%E7%9A%84%E8%BF%9E%E7%BB%AD%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8D%95%E6%AC%A1%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F"><span class="nav-text">DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E9%97%AE%E9%A2%98%EF%BC%9A%E5%BD%93%E8%BF%9B%E8%A1%8C%E9%87%87%E6%B3%A2%E6%97%B6%E4%BC%9A%E4%B8%8D%E8%BF%9E%E7%BB%AD"><span class="nav-text">目前问题：当进行采波时会不连续</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%89%93%E7%AE%97%EF%BC%9A"><span class="nav-text">调试打算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="nav-text">调试结果：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%EF%BC%9A%E6%B2%A1%E6%9C%89%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%97%A0%E6%B3%95%E8%BE%93%E5%87%BA%E6%B3%A2%E5%BD%A2"><span class="nav-text">结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%B3%A2%E5%BD%A2%E6%AD%A3%E5%B8%B8%EF%BC%8C%E9%97%B4%E6%96%AD%E6%B6%88%E5%A4%B1"><span class="nav-text">结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%A7%A6%E5%8F%91%E6%97%B6-%E5%87%BA%E7%8E%B0%E5%A5%87%E6%80%AA%E5%B0%96%E5%B3%B0-%E4%BD%86%E6%98%AF%E5%8D%95%E6%AC%A1%E9%87%87%E9%9B%86%E6%B2%A1%E6%9C%89"><span class="nav-text">当用定时器触发时,出现奇怪尖峰,但是单次采集没有</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2023-x2F-3-x2F-15"><span class="nav-text">2023&#x2F;3&#x2F;15</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+        <div class="page-title"></div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DSP-TIMER-GPIO%E9%A3%9F%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">DSP TIMER GPIO食用过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F"><span class="nav-text">时钟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TIMER"><span class="nav-text">TIMER</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%98%E6%96%B9%E8%A7%A3%E9%87%8A"><span class="nav-text">官方解释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPIO"><span class="nav-text">GPIO</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-text">应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%87%87%E6%A0%B7%E8%AE%BE%E7%BD%AE"><span class="nav-text">输入模式的采样设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8E%A7%E5%88%B6"><span class="nav-text">输入模式的数据控制</span></a></li></ol></li></ol></li></ol></li></ol>
 
     </div>
 </div>
