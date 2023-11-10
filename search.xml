@@ -46,7 +46,7 @@
 </tr>
 <tr>
 <td align="center">Continuous Conversion Mode</td>
-<td align="center">持续转换模式，意思是经过一次转换后自动开启下一次转换，当开启定时器触发时需要关闭</td>
+<td align="center">持续转换模式，意思是一经触发之后自动开启下一次转换，之后将忽略对应触发（除了软件一次采样后手动关闭，即当开启定时器触发时需要关闭）</td>
 </tr>
 <tr>
 <td align="center">Discontinuous Conversion Mode</td>
@@ -62,12 +62,13 @@
 </tr>
 <tr>
 <td align="center">Conversion Data Management Mode</td>
-<td align="center">DMA Circular Mode&#x2F;DMA One shot mode&#x2F;Regular Conversion data stored in DR register only&#x2F;DFSDM Mode(需要测试DMA Circular Mode与One shot 的区别)</td>
+<td align="center">DMA Circular Mode&#x2F;DMA One shot mode&#x2F;Regular Conversion data stored in DR register only&#x2F;DFSDM Mode</td>
 </tr>
 </tbody></table>
-<p>根据内容与自己的选择进行ADC的配置,<strong>需要采数据并且对其进行处理的话,需要将DMA开成Normal</strong>,至于Half word,暂未深入理解为什么这样配置</p>
+<p>根据内容与自己的选择进行ADC的配置,<strong>需要采数据并且对其进行处理的话,需要将DMA开成Normal</strong></p>
 <blockquote>
-<p>为了便于直接使用，这里的数据类型应与DMA配置的Data Width对应。我使用的MCU其ADC转换精度为12位，因此使用HalfWord(16bit)足以，因此配置时两边都使用了默认的HalfWord，该配置使DMA每次从ADC搬运16bit数据到地址testbuffer，下一波数据搬运到testbuffer+16bit的地址中，再下一次到testbuffer+2*16bit。</p>
+<p>关于HalfWord问题</p>
+<p>“这里的数据类型应与DMA配置的Data Width对应。我使用的MCU其ADC转换精度为12位，因此使用HalfWord(16bit)足以，因此配置时两边都使用了默认的HalfWord，该配置使DMA每次从ADC搬运16bit数据到地址testbuffer，下一波数据搬运到testbuffer+16bit的地址中，再下一次到testbuffer+2*16bit。”</p>
 <p><strong>此段来自于以下的链接博客,讲的比较清楚</strong></p>
 </blockquote>
 <hr>
@@ -94,7 +95,7 @@
                       alt="image-20230311223915720" style="zoom:50%;" 
                 >
 
-<p>猜测：看的教程说ADC+DMA必须选择ADC的连续转换模式，而ADC连续转换模式必须要求DMA是循环模式，猜测是DMA的循环模式导致的间断点，因为目前是只采集一次，但是软件触发（这里有个问题，如果开了连续转换模式，软件触发是否有用），只开了一次，而DMA一直在循环搬运导致数据出现问题？</p>
+<p>猜测：猜测是DMA的循环模式导致的间断点，因为目前是只采集一次，但是软件触发，只开了一次，而DMA一直在循环搬运导致数据出现问题？</p>
 <h4 id="调试打算："><a href="#调试打算：" class="headerlink" title="调试打算："></a>调试打算：</h4><ol>
 <li>将ADC改成单次转换模式，并将DMA改成单次模式，观察现象。</li>
 <li>如果没有间断点，说明软件触发对于连续转换模式是有用的，它导致了转换的停止，但DMA没有停止，故产生不连续波。</li>
@@ -153,7 +154,21 @@
 <li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似，需要重复调用函数（？存疑）</em></p>
 </li>
 </ol>
-<h3 id="当用定时器触发时-出现奇怪尖峰-但是单次采集没有"><a href="#当用定时器触发时-出现奇怪尖峰-但是单次采集没有" class="headerlink" title="当用定时器触发时,出现奇怪尖峰,但是单次采集没有"></a>当用定时器触发时,出现奇怪尖峰,但是单次采集没有</h3><h6 id="2023-x2F-3-x2F-15"><a href="#2023-x2F-3-x2F-15" class="headerlink" title="2023&#x2F;3&#x2F;15"></a>2023&#x2F;3&#x2F;15</h6>]]></content>
+<h3 id="遇到问题：波形抖动"><a href="#遇到问题：波形抖动" class="headerlink" title="遇到问题：波形抖动"></a>遇到问题：波形抖动</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230702084051330.png"
+                      alt="image-20230702084051330"
+                ></p>
+<h2 id="正确的配置"><a href="#正确的配置" class="headerlink" title="正确的配置"></a>正确的配置</h2><p>2023&#x2F;7&#x2F;1</p>
+<p>经过更加深入的了解，其实配置不像之前想的那么复杂，比较常规的配置方法是ADC+DMA+TIM触发+软件位开启和关闭，以下是我的常规配置，在程序中，每次采样转换完成后，软件控制位置0，处理完后打开即可达到自己想要的配置效果。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230701185459999.png"
+                      alt="image-20230701185459999"
+                ></p>
+]]></content>
       <tags>
         <tag>stm32h7 adc dma</tag>
       </tags>
@@ -534,5 +549,75 @@
       <tags>
         <tag>SCI FSI F2879D</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>ADS131A0使用手册</title>
+    <url>/2023/07/28/ADS131A0%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h2 id="阅读手册笔记"><a href="#阅读手册笔记" class="headerlink" title="阅读手册笔记"></a>阅读手册笔记</h2><h4 id="Data-Frame拉低开始读取"><a href="#Data-Frame拉低开始读取" class="headerlink" title="Data Frame拉低开始读取"></a>Data Frame拉低开始读取</h4><h4 id="传输位数设置"><a href="#传输位数设置" class="headerlink" title="传输位数设置"></a>传输位数设置</h4><p>由引脚M1控制，<strong>注意上电锁存！</strong></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230728193231030.png"
+                      alt="image-20230728193231030"
+                ></p>
+<h4 id="一帧的数据个数设置"><a href="#一帧的数据个数设置" class="headerlink" title="一帧的数据个数设置"></a>一帧的数据个数设置</h4><p>设置D_SYS_CFG register的FIXED位</p>
+<h6 id="固定模式"><a href="#固定模式" class="headerlink" title="固定模式"></a>固定模式</h6><p>6个字一帧</p>
+<h6 id="模式时序图区别"><a href="#模式时序图区别" class="headerlink" title="模式时序图区别"></a>模式时序图区别</h6><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230728194024243.png"
+                      alt="image-20230728194024243"
+                ></p>
+<h4 id="命令字"><a href="#命令字" class="headerlink" title="命令字"></a>命令字</h4><h3 id="SPI设置"><a href="#SPI设置" class="headerlink" title="SPI设置"></a>SPI设置</h3><p>只接受CPOL&#x3D;0和CPHA&#x3D;1</p>
+<h6 id="接口引脚"><a href="#接口引脚" class="headerlink" title="接口引脚"></a>接口引脚</h6><ul>
+<li>CS 低有效</li>
+<li>SCLK</li>
+<li>DIN</li>
+<li>DOUT</li>
+<li>DRDY 低有效</li>
+</ul>
+<h6 id="接口模式设置"><a href="#接口模式设置" class="headerlink" title="接口模式设置"></a>接口模式设置</h6><p>根据M0设置 ，上电锁存</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230728200959027.png"
+                      alt="image-20230728200959027"
+                ></p>
+<h3 id="异步中断模式（单设备通信使用）"><a href="#异步中断模式（单设备通信使用）" class="headerlink" title="异步中断模式（单设备通信使用）"></a>异步中断模式（单设备通信使用）</h3><p>32做主机</p>
+<table>
+<thead>
+<tr>
+<th align="center">引脚名称</th>
+<th align="center">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CS’</td>
+<td align="center">片选</td>
+</tr>
+<tr>
+<td align="center">SCLK</td>
+<td align="center">时钟</td>
+</tr>
+<tr>
+<td align="center">DIN</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">DOUT</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">DRDY’</td>
+<td align="center"><strong>中断产生引脚</strong>，可以搭配GPIO外部中断使用，由高到低下降沿意味着数据转换完成</td>
+</tr>
+</tbody></table>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230728201816046.png"
+                      alt="image-20230728201816046"
+                ></p>
+]]></content>
   </entry>
 </search>

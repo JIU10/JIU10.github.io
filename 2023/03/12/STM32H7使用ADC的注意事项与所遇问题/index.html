@@ -4,9 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
-    <meta name="description" content="Hexo Theme Redefine">
-    <meta name="author" content="jiu10">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-redefine.png">
+    
+    <meta name="author" content="jiui0">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     
     <!--- Seo Part-->
     
@@ -14,44 +17,75 @@
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="STM32H7使用ADC的注意事项与所遇问题">
-    <meta property="og:description" content="Hexo Theme Redefine">
-    <meta property="og:url" content="http://example.com2023/03/12/STM32H7使用ADC的注意事项与所遇问题/">
     
-    <meta property="og:site_name" content="Jiu10&#39;s Mooland">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="STM32H7使用ADC的注意事项与所遇问题">
-    <meta name="twitter:description" content="Hexo Theme Redefine">
-    <meta name="twitter:image" content="/images/redefine-logo.svg">
+        <meta name="description" content="进行ADC配置时候需要注意以下是个人对各个参数的理解   设置参数 内容    IN5 Single-ended与Differential，单值输入和差分输入   Clock Prescaler ADC时钟分频，分频后结果要小于36MHz   Resolution 采样位数，决定ADC的采样精度   Scan Conversion Mode 当开启多通道时需要开启，进行通道的扫描   Contin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32H7使用ADC的注意事项与所遇问题">
+<meta property="og:url" content="http://example.com/2023/03/12/STM32H7%E4%BD%BF%E7%94%A8ADC%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E4%B8%8E%E6%89%80%E9%81%87%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="JIU&#39;s home">
+<meta property="og:description" content="进行ADC配置时候需要注意以下是个人对各个参数的理解   设置参数 内容    IN5 Single-ended与Differential，单值输入和差分输入   Clock Prescaler ADC时钟分频，分频后结果要小于36MHz   Resolution 采样位数，决定ADC的采样精度   Scan Conversion Mode 当开启多通道时需要开启，进行通道的扫描   Contin">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311222118929.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311223915720.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230312142038580.png">
+<meta property="og:image" content="c:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230702084051330.png">
+<meta property="og:image" content="c:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230701185459999.png">
+<meta property="article:published_time" content="2023-03-11T16:03:26.000Z">
+<meta property="article:modified_time" content="2023-07-02T05:04:19.951Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="stm32h7 adc dma">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/JIU10/picturerep/main/image-20230311222118929.png">
+    
+    
     <!--- Icon Part-->
-    <link rel="icon" type="image/png" href="/images/redefine-logo.svg" sizes="192x192">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-logo.svg">
-    <meta name="theme-color" content="#005080">
-    <link rel="shortcut icon" href="/images/redefine-logo.svg">
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
     
     <title>
         
             STM32H7使用ADC的注意事项与所遇问题 -
         
-        Jiu10&#39;s Mooland
+        Jiui0&#39;s Blog
     </title>
     
 <link rel="stylesheet" href="/css/style.css">
 
-    
-<link rel="stylesheet" href="/assets/fonts.css">
 
     
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
     
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
     
     <script id="hexo-configurations">
-    let REDEFINE = window.REDEFINE || {};
-    REDEFINE.hexo_config = {"hostname":"example.com","root":"/","language":"zh-cn","path":"search.xml"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#005080","avatar":"/images/redefine-avatar.svg","favicon":"/images/redefine-logo.svg","og_image":{"enable":false,"image_url":null},"article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#f78736","right":"#367df7","transparency":35},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title_color":{"light":"#fff","dark":"#d1d1b6"},"description":"Hello,have a nice day","custom_font":{"enable":false,"font_family":null,"font_url":null}},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":true},"code_block":{"copy":true,"style":"mac","custom_font":{"enable":false,"font_family":null,"font_url":null}},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"1.2.0","friend_links":{"columns":2},"home_article":{"date_format":"auto","category":{"enable":true,"limit":3},"tag":{"enable":true,"limit":3}},"plugins":{"aplayer":{"enable":false,"audio":[{"name":null,"artist":null,"url":null,"cover":null},{"name":null,"artist":null,"url":null,"cover":null}]}}};
-    REDEFINE.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.config = {"hostname":"example.com","root":"/","language":"zh-cn","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Theme Redefine","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
   </script>
     
+    <!--- Fontawesome Part-->
     
 <link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
 
@@ -74,44 +108,43 @@
 <body>
 <div class="progress-bar-container">
     
-        <span class="scroll-progress-bar"></span>
-    
 
     
         <span class="pjax-progress-bar"></span>
-        <span class="pjax-progress-icon">
+        <span class="swup-progress-icon">
             <i class="fa-solid fa-circle-notch fa-spin"></i>
         </span>
     
 </div>
 
 
-<main class="page-container">
+<main class="page-container" id="swup">
 
     
 
-    <div class="page-main-content">
+    <div class="main-content-container">
 
-        <div class="page-main-content-top">
-            <header class="menu-wrapper">
+
+        <div class="main-content-header">
+            <header class="navbar-container">
     
-    <div class="menu-content">
+    <div class="navbar-content">
         <div class="left">
             
             <a class="logo-title" href="/">
                 
-                Jiu10&#39;s Mooland
+                Jiui0&#39;s Blog
                 
             </a>
         </div>
 
         <div class="right">
             <!-- PC -->
-            <div class="pc">
-                <ul class="menu-list">
+            <div class="desktop">
+                <ul class="navbar-list">
                     
                         
-                            <li class="menu-item">
+                            <li class="navbar-item">
                                 <!-- Menu -->
                                 <a class="" 
                                     href="/"  >
@@ -119,23 +152,7 @@
                                         
                                             <i class="fa-regular fa-house"></i>
                                         
-                                        首頁
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="menu-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/archives"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-archive"></i>
-                                        
-                                        歸檔
+                                        HOME
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -148,41 +165,26 @@
             <!-- Mobile -->
             <div class="mobile">
                 
-                <div class="icon-item menu-bar">
-                    <div class="menu-bar-middle"></div>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile drawer -->
-    <div class="menu-drawer">
-        <ul class="drawer-menu-list">
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
             
                 
-                    <li class="drawer-menu-item flex-center">
-                        <a class="" 
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/"  >
                              
                                 
                                     <i class="fa-regular fa-house"></i>
                                 
-                                首頁
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-menu-item flex-center">
-                        <a class="" 
-                        href="/archives"  >
-                             
-                                
-                                    <i class="fa-regular fa-archive"></i>
-                                
-                                歸檔
+                                HOME
                             
                         </a>
                     </li>
@@ -200,50 +202,50 @@
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="main-content-body">
+
+            
 
             <div class="main-content">
 
                 
-                    <div class="fade-in-down-animation">
-    <div class="post-page-container">
-        <div class="article-content-container">
+                    <div class="post-page-container">
+    <div class="article-content-container">
 
+        <div class="article-title">
             
+                <h1 class="article-title-regular">STM32H7使用ADC的注意事项与所遇问题</h1>
             
-                <div class="article-title">
-                    <h1 class="article-title-regular">STM32H7使用ADC的注意事项与所遇问题</h1>
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/who.jpg">
                 </div>
-            
-                
-            
-
-            
-                <div class="article-header">
-                    <div class="avatar">
-                        <img src="/images/redefine-avatar.svg">
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">jiui0</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
                     </div>
-                    <div class="info">
-                        <div class="author">
-                            <span class="name">jiu10</span>
-                            
-                                <span class="author-label">lol</span>
-                            
-                        </div>
-                        <div class="meta-info">
-                            <div class="article-meta-info">
+                    <div class="meta-info">
+                        <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="pc">2023-03-12 00:03:26</span>
-        <span class="mobile">2023-03-12 00:03</span>
-        <span class="hover-info">撰寫</span>
+        <span class="desktop">2023-03-12 00:03:26</span>
+        <span class="mobile">2023-03-12 00:03:26</span>
+        <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="pc">2023-03-15 13:47:23</span>
-            <span class="mobile">2023-03-15 13:47</span>
-            <span class="hover-info">更新</span>
+            <span class="desktop">2023-07-02 13:04:19</span>
+            <span class="mobile">2023-07-02 13:04:19</span>
+            <span class="hover-info">Updated</span>
         </span>
     
 
@@ -264,12 +266,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>1.2k 字數</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.2k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 分鐘</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 Mins</span>
         </span>
     
     
@@ -279,13 +281,16 @@
     
 </div>
 
-                        </div>
                     </div>
                 </div>
-            
+            </div>
+        
 
-            <div class="article-content markdown-body">
-                <h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><h3 id="以下是个人对各个参数的理解"><a href="#以下是个人对各个参数的理解" class="headerlink" title="以下是个人对各个参数的理解"></a>以下是个人对各个参数的理解</h3><table>
+        
+
+
+        <div class="article-content markdown-body">
+            <h2 id="进行ADC配置时候需要注意"><a href="#进行ADC配置时候需要注意" class="headerlink" title="进行ADC配置时候需要注意"></a>进行ADC配置时候需要注意</h2><h3 id="以下是个人对各个参数的理解"><a href="#以下是个人对各个参数的理解" class="headerlink" title="以下是个人对各个参数的理解"></a>以下是个人对各个参数的理解</h3><table>
 <thead>
 <tr>
 <th align="center">设置参数</th>
@@ -310,7 +315,7 @@
 </tr>
 <tr>
 <td align="center">Continuous Conversion Mode</td>
-<td align="center">持续转换模式，意思是经过一次转换后自动开启下一次转换，当开启定时器触发时需要关闭</td>
+<td align="center">持续转换模式，意思是一经触发之后自动开启下一次转换，之后将忽略对应触发（除了软件一次采样后手动关闭，即当开启定时器触发时需要关闭）</td>
 </tr>
 <tr>
 <td align="center">Discontinuous Conversion Mode</td>
@@ -326,12 +331,13 @@
 </tr>
 <tr>
 <td align="center">Conversion Data Management Mode</td>
-<td align="center">DMA Circular Mode&#x2F;DMA One shot mode&#x2F;Regular Conversion data stored in DR register only&#x2F;DFSDM Mode(需要测试DMA Circular Mode与One shot 的区别)</td>
+<td align="center">DMA Circular Mode&#x2F;DMA One shot mode&#x2F;Regular Conversion data stored in DR register only&#x2F;DFSDM Mode</td>
 </tr>
 </tbody></table>
-<p>根据内容与自己的选择进行ADC的配置,<strong>需要采数据并且对其进行处理的话,需要将DMA开成Normal</strong>,至于Half word,暂未深入理解为什么这样配置</p>
+<p>根据内容与自己的选择进行ADC的配置,<strong>需要采数据并且对其进行处理的话,需要将DMA开成Normal</strong></p>
 <blockquote>
-<p>为了便于直接使用，这里的数据类型应与DMA配置的Data Width对应。我使用的MCU其ADC转换精度为12位，因此使用HalfWord(16bit)足以，因此配置时两边都使用了默认的HalfWord，该配置使DMA每次从ADC搬运16bit数据到地址testbuffer，下一波数据搬运到testbuffer+16bit的地址中，再下一次到testbuffer+2*16bit。</p>
+<p>关于HalfWord问题</p>
+<p>“这里的数据类型应与DMA配置的Data Width对应。我使用的MCU其ADC转换精度为12位，因此使用HalfWord(16bit)足以，因此配置时两边都使用了默认的HalfWord，该配置使DMA每次从ADC搬运16bit数据到地址testbuffer，下一波数据搬运到testbuffer+16bit的地址中，再下一次到testbuffer+2*16bit。”</p>
 <p><strong>此段来自于以下的链接博客,讲的比较清楚</strong></p>
 </blockquote>
 <hr>
@@ -358,7 +364,7 @@
                       alt="image-20230311223915720" style="zoom:50%;" 
                 >
 
-<p>猜测：看的教程说ADC+DMA必须选择ADC的连续转换模式，而ADC连续转换模式必须要求DMA是循环模式，猜测是DMA的循环模式导致的间断点，因为目前是只采集一次，但是软件触发（这里有个问题，如果开了连续转换模式，软件触发是否有用），只开了一次，而DMA一直在循环搬运导致数据出现问题？</p>
+<p>猜测：猜测是DMA的循环模式导致的间断点，因为目前是只采集一次，但是软件触发，只开了一次，而DMA一直在循环搬运导致数据出现问题？</p>
 <h4 id="调试打算："><a href="#调试打算：" class="headerlink" title="调试打算："></a>调试打算：</h4><ol>
 <li>将ADC改成单次转换模式，并将DMA改成单次模式，观察现象。</li>
 <li>如果没有间断点，说明软件触发对于连续转换模式是有用的，它导致了转换的停止，但DMA没有停止，故产生不连续波。</li>
@@ -417,149 +423,217 @@
 <li><p>仍旧没搞清楚Conversion Data Management Mode，看cubemx的描述意思应该是使用DMA一次性传还是循环传，<em>DMA One shot和ADC的单次转换模式类似，需要重复调用函数（？存疑）</em></p>
 </li>
 </ol>
-<h3 id="当用定时器触发时-出现奇怪尖峰-但是单次采集没有"><a href="#当用定时器触发时-出现奇怪尖峰-但是单次采集没有" class="headerlink" title="当用定时器触发时,出现奇怪尖峰,但是单次采集没有"></a>当用定时器触发时,出现奇怪尖峰,但是单次采集没有</h3><h6 id="2023-x2F-3-x2F-15"><a href="#2023-x2F-3-x2F-15" class="headerlink" title="2023&#x2F;3&#x2F;15"></a>2023&#x2F;3&#x2F;15</h6>
-            </div>
+<h3 id="遇到问题：波形抖动"><a href="#遇到问题：波形抖动" class="headerlink" title="遇到问题：波形抖动"></a>遇到问题：波形抖动</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230702084051330.png"
+                      alt="image-20230702084051330"
+                ></p>
+<h2 id="正确的配置"><a href="#正确的配置" class="headerlink" title="正确的配置"></a>正确的配置</h2><p>2023&#x2F;7&#x2F;1</p>
+<p>经过更加深入的了解，其实配置不像之前想的那么复杂，比较常规的配置方法是ADC+DMA+TIM触发+软件位开启和关闭，以下是我的常规配置，在程序中，每次采样转换完成后，软件控制位置0，处理完后打开即可达到自己想要的配置效果。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:/Users/24016/AppData/Roaming/Typora/typora-user-images/image-20230701185459999.png"
+                      alt="image-20230701185459999"
+                ></p>
 
-            
-                <div class="post-copyright-info">
-                    <div class="article-copyright-info-container">
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
     <ul>
-        <li>文章標題：STM32H7使用ADC的注意事项与所遇问题</li>
-        <li>文章作者：jiu10</li>
-        <li>撰寫時間：2023-03-12 00:03:26</li>
+        <li><strong>Title:</strong> STM32H7使用ADC的注意事项与所遇问题</li>
+        <li><strong>Author:</strong> jiui0</li>
+        <li><strong>Created at
+                :</strong> 2023-03-12 00:03:26</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2023-07-02 13:04:19
+            </li>
+        
         <li>
-            永久連結：https://redefine.ohevan.com/2023/03/12/STM32H7使用ADC的注意事项与所遇问题/
+            <strong>Link:</strong> https://github.com/JIU10/2023/03/12/STM32H7使用ADC的注意事项与所遇问题/
         </li>
         <li>
-            版權宣告：這個網站所有文章均使用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 授權。
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
         </li>
     </ul>
 </div>
 
-                </div>
-            
-
-            
-                <ul class="post-tags-box">
-                    
-                        <li class="tag-item">
-                            <a href="/tags/stm32h7-adc-dma/">#stm32h7 adc dma</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            
-
-            
-
-            
-                <div class="article-nav">
-                    
-                        <div class="article-prev">
-                            <a class="prev"
-                            rel="prev"
-                            href="/2023/03/17/AD9910%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B/"
-                            >
-                                <span class="left arrow-icon flex-center">
-                                    <i class="fa-solid fa-chevron-left"></i>
-                                </span>
-                                <span class="title flex-center">
-                                    <span class="post-nav-title-item">AD9910使用过程</span>
-                                    <span class="post-nav-item">上一篇</span>
-                                </span>
-                            </a>
-                        </div>
-                    
-                    
-                        <div class="article-next">
-                            <a class="next"
-                            rel="next"
-                            href="/2023/03/11/hello-world/"
-                            >
-                                <span class="title flex-center">
-                                    <span class="post-nav-title-item">Hello World</span>
-                                    <span class="post-nav-item">下一篇</span>
-                                </span>
-                                <span class="right arrow-icon flex-center">
-                                    <i class="fa-solid fa-chevron-right"></i>
-                                </span>
-                            </a>
-                        </div>
-                    
-                </div>
-            
-
-
-            
-        </div>
+            </div>
+        
 
         
-            <div class="toc-content-container">
-                <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">此頁目錄</div>
-        <div class="page-title">STM32H7使用ADC的注意事项与所遇问题</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8CADC%E9%85%8D%E7%BD%AE%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F"><span class="nav-text">进行ADC配置时候需要注意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8B%E6%98%AF%E4%B8%AA%E4%BA%BA%E5%AF%B9%E5%90%84%E4%B8%AA%E5%8F%82%E6%95%B0%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">以下是个人对各个参数的理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">碰到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA%E7%9A%84%E5%8D%95%E6%AC%A1%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%BE%AA%E7%8E%AF%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8EADC%E7%9A%84%E8%BF%9E%E7%BB%AD%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8D%95%E6%AC%A1%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F"><span class="nav-text">DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E9%97%AE%E9%A2%98%EF%BC%9A%E5%BD%93%E8%BF%9B%E8%A1%8C%E9%87%87%E6%B3%A2%E6%97%B6%E4%BC%9A%E4%B8%8D%E8%BF%9E%E7%BB%AD"><span class="nav-text">目前问题：当进行采波时会不连续</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%89%93%E7%AE%97%EF%BC%9A"><span class="nav-text">调试打算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="nav-text">调试结果：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%EF%BC%9A%E6%B2%A1%E6%9C%89%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%97%A0%E6%B3%95%E8%BE%93%E5%87%BA%E6%B3%A2%E5%BD%A2"><span class="nav-text">结果：没有进入HAL_ADC_ConvCpltCallback函数，无法输出波形</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E8%BF%9B%E5%85%A5HAL-ADC-ConvCpltCallback%E5%87%BD%E6%95%B0%EF%BC%8C%E6%B3%A2%E5%BD%A2%E6%AD%A3%E5%B8%B8%EF%BC%8C%E9%97%B4%E6%96%AD%E6%B6%88%E5%A4%B1"><span class="nav-text">结果进入HAL_ADC_ConvCpltCallback函数，波形正常，间断消失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E7%94%A8%E5%AE%9A%E6%97%B6%E5%99%A8%E8%A7%A6%E5%8F%91%E6%97%B6-%E5%87%BA%E7%8E%B0%E5%A5%87%E6%80%AA%E5%B0%96%E5%B3%B0-%E4%BD%86%E6%98%AF%E5%8D%95%E6%AC%A1%E9%87%87%E9%9B%86%E6%B2%A1%E6%9C%89"><span class="nav-text">当用定时器触发时,出现奇怪尖峰,但是单次采集没有</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2023-x2F-3-x2F-15"><span class="nav-text">2023&#x2F;3&#x2F;15</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/stm32h7-adc-dma/">#stm32h7 adc dma</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
 
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/03/17/AD9910%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">AD9910使用过程</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/03/11/hello-world/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hello World</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
     </div>
+    
+
+        
+            
+ 
+    <div id="waline"></div>
+    <script type="module"  data-swup-reload-script>
+        import { init } from '/js/libs/waline.mjs';
+
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://example.example.com',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+            });
+        }
+
+        if ('true') {
+            const loadWalineTimeout = setTimeout(() => {
+                loadWaline();
+                clearTimeout(loadWalineTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadWaline);
+        }
+        
+    </script>
+
+
+
+        
+    
 </div>
+
             </div>
         
     </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">STM32H7使用ADC的注意事项与所遇问题</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8CADC%E9%85%8D%E7%BD%AE%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F"><span class="nav-text">进行ADC配置时候需要注意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8B%E6%98%AF%E4%B8%AA%E4%BA%BA%E5%AF%B9%E5%90%84%E4%B8%AA%E5%8F%82%E6%95%B0%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">以下是个人对各个参数的理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">碰到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA%E7%9A%84%E5%8D%95%E6%AC%A1%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%BE%AA%E7%8E%AF%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8EADC%E7%9A%84%E8%BF%9E%E7%BB%AD%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8D%95%E6%AC%A1%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F"><span class="nav-text">DMA的单次模式和循环模式的选择与ADC的连续转换模式和单次转换模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98%EF%BC%9A%E6%B3%A2%E5%BD%A2%E6%8A%96%E5%8A%A8"><span class="nav-text">遇到问题：波形抖动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-text">正确的配置</span></a></li></ol>
+
+    </div>
 </div>
+        </div>
+    
+</div>
+
 
 
                 
 
             </div>
 
-
+            
 
         </div>
 
-        <div class="page-main-content-bottom">
-            <footer class="footer">
-    <div class="info-container">
-        <div class="copyright-info">
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
             &copy;
             
               <span>2022</span>
               -
             
-            2023&nbsp;&nbsp;<i class="fa-regular fa-computer-classic"></i>&nbsp;&nbsp;<a href="/">jiu10</a>
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">jiui0</a>
         </div>
         
-            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-            <div class="website-count info-item">
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
                 
-                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
-                        讀者&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
-                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
-                        閱覽&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
-        <div class="theme-info info-item">
-            <span class="powered-by-container"><?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 框架</span>
-                <br> 
-            <span class="theme-version-container">主題&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v1.2.0</a>
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
         </div>
         
         
-        
-            <div id="start_time_div" style="display:none">
-                2022/8/17 11:45:14
-            </div>
             <div>
-                博客已運行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小時 <span class="odometer" id="runtime_minutes"></span> 分鐘 <span class="odometer" id="runtime_seconds"></span> 秒
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
             </div>
         
         
-        
-            <script async data-pjax>
+            <script data-swup-reload-script>
                 try {
                     function odometer_init() {
                     const elements = document.querySelectorAll('.odometer');
@@ -585,7 +659,7 @@
     
         <div class="post-tools">
             <div class="post-tools-container">
-    <ul class="tools-list">
+    <ul class="article-tools-list">
         <!-- TOC aside toggle -->
         
             <li class="right-bottom-tools page-aside-toggle">
@@ -595,28 +669,28 @@
 
         <!-- go comment -->
         
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
     </ul>
 </div>
 
         </div>
     
 
-    <div class="right-bottom-side-tools">
+    <div class="right-side-tools-container">
         <div class="side-tools-container">
-    <ul class="unfolded-tools-list">
-        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
             <i class="fa-regular fa-magnifying-glass-plus"></i>
         </li>
 
-        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
             <i class="fa-regular fa-magnifying-glass-minus"></i>
         </li>
 
-        <li class="right-bottom-tools tool-expand-width flex-center">
-            <i class="fa-regular fa-expand"></i>
-        </li>
-
-        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
             <i class="fa-regular fa-moon"></i>
         </li>
 
@@ -624,20 +698,22 @@
         
 
         
-            <li class="right-bottom-tools tool-scroll-to-top flex-center">
-                <i class="fa-regular fa-arrow-up"></i>
-            </li>
-        
 
-        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
             <i class="fa-regular fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="folded-tools-list">
-        <li class="right-bottom-tools tool-toggle-show flex-center">
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
             <i class="fa-regular fa-cog fa-spin"></i>
         </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
         
     </ul>
 </div>
@@ -651,34 +727,73 @@
 
     
 
-
 </main>
 
 
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
 
 
-<script src="/js/utils.js"></script>
 
-<script src="/js/main.js"></script>
 
-<script src="/js/layouts/menu-shrink.js"></script>
 
-<script src="/js/tools/go-top-bottom.js"></script>
 
-<script src="/js/tools/dark-light-toggle.js"></script>
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
 
 
 
 
 
     
-<script src="/js/tools/code-block.js"></script>
+<script src="/js/tools/codeBlock.js" type="module"></script>
 
 
 
 
     
-<script src="/js/layouts/lazyload.js"></script>
+<script src="/js/layouts/lazyload.js" type="module"></script>
 
 
 
@@ -687,7 +802,7 @@
 <script src="/js/tools/runtime.js"></script>
 
     
-<script src="/js/layouts/odometer.min.js"></script>
+<script src="/js/libs/odometer.min.js"></script>
 
     
 <link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
@@ -695,57 +810,32 @@
 
 
 
+  
+<script src="/js/libs/Typed.min.js"></script>
 
-<div class="post-scripts pjax">
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
     
         
-<script src="/js/tools/toc-toggle.js"></script>
-
 <script src="/js/libs/anime.min.js"></script>
 
-<script src="/js/layouts/toc.js"></script>
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
 
-<script src="/js/plugins/tabs.js"></script>
+<script src="/js/layouts/toc.js" type="module"></script>
 
-    
+<script src="/js/plugins/tabs.js" type="module"></script>
+
     
 </div>
-
-
-    
-<script src="/js/libs/pjax.min.js"></script>
-
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        window.pjax = new Pjax({
-            selectors: [
-                'head title',
-                '.page-container',
-                '.pjax'
-            ],
-            history: true,
-            debug: false,
-            cacheBust: false,
-            timeout: 0,
-            analytics: false,
-            currentUrlFullReload: false,
-            scrollRestoration: false,
-            // scrollTo: true,
-        });
-
-        document.addEventListener('pjax:send', () => {
-            REDEFINE.utils.pjaxProgressBarStart();
-        });
-
-        document.addEventListener('pjax:complete', () => {
-            REDEFINE.utils.pjaxProgressBarEnd();
-            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-            REDEFINE.refresh();
-        });
-    });
-</script>
-
-
 
 
 </body>
